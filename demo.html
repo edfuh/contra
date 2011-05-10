@@ -2,33 +2,27 @@
 <html lang="en-US">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>Contra Demo</title>
+  <style>
+    body{font-family:sans-serif;}
+  </style>
 </head>
 <body>
   <h1>Contra JS</h1>
 
-
   <script src="contra.js"></script>
   <script>
     contra(function () {
-        alert('first event');
+        alert('ZOMGZ nerd!');
     })
 
     contra(function () {
         var img = new Image;
-        img.src = 'http://edfuh.com/spacejam.gif';
+        img.src = 'http://nesmaps.com/images/Titles/ContraTitle.png';
         img.onload = function () {
             document.body.style.background = 'url('+ img.src +')';
             document.body.style.color = '#FFF';
         };
-    });
-
-    contra(function () {
-        var b = document.createElement('button');
-
-        b.textContent = '\nyou\'re a nerd\n'
-
-        document.body.appendChild(b);
     });
   </script>
 </body>
