@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <h1>Contra JS</h1>
+
+
+  <script src="contra.js"></script>
+  <script>
+    contra(function () {
+        alert('first event');
+    })
+
+    contra(function () {
+        var img = new Image;
+        img.src = 'http://edfuh.com/spacejam.gif';
+        img.onload = function () {
+            document.body.style.background = 'url('+ img.src +')';
+            document.body.style.color = '#FFF';
+        };
+    });
+
+    contra(function () {
+        var b = document.createElement('button');
+
+        b.textContent = '\nyou\'re a nerd\n'
+
+        document.body.appendChild(b);
+    });
+  </script>
+</body>
+</html>
