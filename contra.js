@@ -23,11 +23,12 @@
         } else {
             step = 0;
         }
-    };
+    },
+    $ = w.jQuery;
 
     // if the children use the jQueries
-    if (w.jQuery) {
-        w.jQuery(d).bind('keyup', onKey);
+    if (typeof $ !== 'undefined') {
+        $(d).bind('keyup', onKey);
     } else {
         // implementing IE5.5 event model lolol
         d.onkeyup = onKey;
