@@ -1,19 +1,19 @@
 (function(w, d) {
     var fns = [],
+        key,
+        fn,
         // up up down down left right left right b a
         code = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65],
         step = 0,
 
     execCallbacks = function () {
-        var fn;
-
         while (fn = fns.shift()) {
-            fn.call();
+            fn();
         }
     },
 
     onKey = function (e) {
-        var key = e.which || e.keyCode;
+        key = e.which || e.keyCode;
 
         if ( key == code[step] ) {
             step++;
@@ -24,15 +24,12 @@
             step = 0;
         }
     },
-    $ = w.jQuery;
+    evtLstr = 'addEventListener',
+    kyUp = 'keyup';
 
-    // if the children use the jQueries
-    if (typeof $ !== 'undefined') {
-        $(d).bind('keyup', onKey);
-    } else {
-        // implementing IE5.5 event model lolol
-        d.onkeyup = onKey;
-    }
+    !!d[evtLstr] ?
+        d[evtLstr](kyUp, onKey, false) :
+        d.attachEvent('on' + kyUp, onKey);
 
     // make'r global
     w.contra = function (c) {
