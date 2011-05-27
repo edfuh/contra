@@ -4,6 +4,8 @@ Lets you add the contra code to your sites because you like to have fun and you 
 
 UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A
 
+[examples](http://konamicodesites.com "Title")
+
 ## Usage ##
 
     contra(function () {
