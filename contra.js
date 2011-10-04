@@ -1,3 +1,9 @@
+/*!
+* contra.js
+* Ed Fuhrken
+* https://github.com/edfuh/contra
+* License MIT
+*/
 (function(w, d) {
     var fns = [],
         key,
