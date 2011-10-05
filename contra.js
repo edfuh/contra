@@ -14,7 +14,7 @@
         evtLstr = 'addEventListener',
         kyUp = 'keyup';
 
-    function complete () {
+    function complete() {
         while (fn = fns.shift()) {
             fn();
         }
