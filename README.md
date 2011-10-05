@@ -14,7 +14,7 @@ UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A
 
 Now works on mobile too
 
-well iOS 4 mobile safari, that's the only phone i have to test it on
+well iOS 4 safari, that's the only phone i have to test it on
 
 just include contra.mobile.js and contra.mobile.css (after you make it pretty)
 
