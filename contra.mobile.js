@@ -12,6 +12,7 @@
         step = 0,
         // Touch enabled
         isT = !!('ontouchstart' in w),
+        undef = void 0,
         almostThere = false,
         currTouch,
         curX,
@@ -89,11 +90,13 @@
     }
 
     function hideButtons() {
-        btnHolder.className = 'contra-hidden';
+        if (btnHolder !== undef) {
+            btnHolder.className = 'contra-hidden';
+        }
     }
 
     function showButtons() {
-        if (typeof btnHolder === 'undefined') {
+        if (btnHolder === undef) {
             btnHolder = d[sCreateElement]('div');
             btnA = d[sCreateElement](sButton);
             btnB = d[sCreateElement](sButton);

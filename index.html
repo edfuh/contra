@@ -7,24 +7,65 @@
   <link rel="stylesheet" href="contra.mobile.css" />
   <style>
     body{font-family:sans-serif;}
+    #box{
+      margin: 15% auto 0;
+      padding: 20px;
+      position: relative;
+      width: 160px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <h1>Contra JS</h1>
-  <p>↑ ↑ ↓ ↓ ← → ← → B A</p>
+  <div id="box">
+    <h1>Contra JS</h1>
+    <p>↑ ↑ ↓ ↓ ← → ← → B A</p>
+  </div>
 
-  <script src="contra.mobile.min.js"></script>
+  <!-- include JS file -->
+  <script src="contra.mobile.js"></script>
+  <!-- go nuts -->
   <script>
     contra(function () {
         alert('ZOMGZ nerd!');
     })
 
     contra(function () {
-        var img = new Image;
-        img.src = 'http://nesmaps.com/images/Titles/ContraTitle.png';
+        var img = new Image,
+            y = 0;
+        img.src = 'assets/contra.png';
         img.onload = function () {
             document.body.style.background = 'url('+ img.src +')';
             document.body.style.color = '#FFF';
+
+            var a = document.createElement('audio'),
+                srcs = ['assets/contra.mp3', 'assets/contra.ogg'],
+                src;
+
+            for (var i = 0; i < srcs.length; i++) {
+                src = document.createElement('source');
+                src.src = srcs[i];
+                a.appendChild(src);
+            }
+
+            a.preload = a.autoplay = true;
+
+            window.ontouchstart = function () {
+                a.play();
+            }
+
+            setInterval(function () {
+                document.body.style.backgroundPosition = '0px ' + (y--) + 'px';
+                y = y > img.height ? 0 : y;
+            }, 50);
+
+            setInterval(function () {
+                var box = document.getElementById('box'),
+                    rand = Math.floor(Math.random() * 30) % 5 === 0 ? 1 : 0;
+
+                box.style.background = rand ? '#FFF' : '#000';
+                box.style.color =  rand ? '#000' : '#FFF';
+            }, 50);
         };
     });
   </script>
