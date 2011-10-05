@@ -1,7 +1,3 @@
-/*jshint
- browser:true,
- white:true
-*/
 /*!
 * contra.js
 * Ed Fuhrken
