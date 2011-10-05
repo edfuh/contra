@@ -9,7 +9,7 @@ UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A
 ## Usage ##
 
     contra(function () {
-        alert('ZOMGZ you're a nerd!');
+        alert('ZOMGZ you\'re a nerd!');
     });
 
 Now works on mobile too
