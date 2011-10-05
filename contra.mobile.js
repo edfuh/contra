@@ -1,10 +1,14 @@
+/*jshint
+ browser:true,
+ white:true
+*/
 /*!
 * contra.js
 * Ed Fuhrken
 * https://github.com/edfuh/contra
 * License MIT
 */
-(function(w, d) {
+(function (w, d) {
     var fns = [],
         fn,
         // up up down down left right left right b a
@@ -22,26 +26,17 @@
         btnA,
         btnB;
 
+    function reset() {
+        almostThere = false;
+        step = 0;
+        isT && hideButtons();
+    }
+
     function complete() {
         while (fn = fns.shift()) {
             fn();
         }
-    };
-
-    function onKey(e) {
-        var key = e.which || e.keyCode;
-
-        if ( key === code[step] ) {
-            step++;
-            if (step >= code.length) {
-                complete();
-                reset();
-            }
-        } else {
-            step = 0;
-            reset();
-        }
-    };
+    }
 
     function addEvent(event, fn) {
         !!d[evtLstr] ?
@@ -55,13 +50,76 @@
     }
 
     function childOf(element, parent) {
-        while (element = element.parentNode)
-          if (element === parent) return true;
+        while (element = element.parentNode) {
+            if (element === parent) {
+                return true;
+            }
+        }
         return false;
     }
 
     function createElement(el) {
         return d.createElement(el);
+    }
+
+    function onKey(e) {
+        var key = e.which || e.keyCode;
+
+        if (key === code[step]) {
+            step++;
+            if (step >= code.length) {
+                complete();
+                reset();
+            }
+        } else {
+            reset();
+        }
+    }
+
+    function btnClick(e) {
+        stopEvent(e);
+        curY = curX = iX = iY = 0;
+
+        var letter = this.id.split('-')[1],
+            key;
+
+        if (letter === 'a') {
+            key = 65;
+        } else if (letter === 'b') {
+            key = 66;
+        }
+
+        onKey({
+            which : key
+        });
+    }
+
+    function hideButtons() {
+        btnHolder.className = 'contra-hidden';
+    }
+
+    function showButtons() {
+        btnHolder = createElement('div');
+        btnA = createElement('button');
+        btnB = createElement('button');
+        btnHolder.id = 'contracode-controller';
+        btnA.id = 'contracode-a';
+        btnB.id = 'contracode-b';
+        btnA.innerHTML = 'A';
+        btnB.innerHTML = 'B';
+        btnHolder.style.cssText = [
+            'position:absolute',
+            'top:0',
+            'left:0',
+            'right:0',
+            'bottom:0'
+        ].join(';');
+
+        btnHolder.className = 'contra-visible';
+
+        btnHolder.appendChild(btnB);
+        btnHolder.appendChild(btnA);
+        d.body.appendChild(btnHolder);
     }
 
     function onTouchStart(e) {
@@ -97,9 +155,7 @@
             if (tg) {
                 btnClick.call(tg, e);
             } else {
-                onKey({
-                    which : 0
-                });
+                reset();
             }
         } else {
 
@@ -133,62 +189,12 @@
                 which : key
             });
 
+            // are we there yet?
             if (step === code.length - 2) {
+                almostThere = true;
                 showButtons();
             }
         }
-    }
-
-    function btnClick(e) {
-        stopEvent(e);
-        curY = curX = iX = iY = 0;
-
-        var letter = this.id.split('-')[1],
-            key;
-
-        if (letter === 'a') {
-            key = 65;
-        } else if (letter === 'b') {
-            key = 66;
-        }
-
-        onKey({
-            which : key
-        });
-    }
-
-    function hideButtons() {
-        btnHolder.className = 'contra-hidden';
-    }
-
-    function showButtons() {
-        almostThere = true;
-        btnHolder = createElement('div');
-        btnA = createElement('button');
-        btnB = createElement('button');
-        btnHolder.id = 'contracode-controller';
-        btnA.id = 'contracode-a';
-        btnB.id = 'contracode-b';
-        btnA.innerHTML = 'A';
-        btnB.innerHTML = 'B';
-        btnHolder.style.cssText = [
-            'position:absolute',
-            'top:0',
-            'left:0',
-            'right:0',
-            'bottom:0'
-        ].join(';');
-
-        btnHolder.className = 'contra-visible';
-
-        btnHolder.appendChild(btnB);
-        btnHolder.appendChild(btnA);
-        d.body.appendChild(btnHolder);
-    }
-
-    function reset() {
-        almostThere = false;
-        isT && hideButtons();
     }
 
     addEvent('keyup', onKey);
@@ -202,4 +208,4 @@
     w.contra = function (c) {
         fns.push(c);
     };
-})(this, document);
+}(this, document));
