@@ -1,0 +1,49 @@
+#contracode-controller{
+  border:10px solid #000;
+  text-align:center;
+  background:#EEE;
+  -webkit-transition:all 2s linear;
+}
+#contracode-a,
+#contracode-b{
+  -webkit-border-radius:40px;
+  border:0;
+  background:#F00;
+  color:#C00;
+  font-size:40px;
+  display:block;
+  margin:10%;
+  float:right;
+  padding:15px;
+  text-align:center;
+  width:80px;
+  height:80px;
+  text-shadow:1px 1px 1px #FFF;
+  -webkit-box-shadow: inset 0 0 6px 4px #FF5252,
+                     1px 1px 0 #B30000,
+                     2px 2px 0 #B30000,
+                     3px 3px 0 #B30000,
+                     4px 4px 0 #B30000,
+                     5px 5px 0 #B30000,
+                     6px 6px 0 #B30000;
+}
+#contracode-b{
+  float:left;
+}
+
+#contracode-a:active,
+#contracode-b:active{
+  -webkit-transform: translate(3px, 3px);
+  -webkit-box-shadow: inset 0 0 6px 4px #FF5252,
+                     1px 1px 0 #B30000,
+                     2px 2px 0 #B30000,
+                     3px 3px 0 #B30000;
+}
+
+.contra-hidden{
+  opacity:0;
+  display:none;
+}
+.contra-visible{
+  opacity:1;
+}
