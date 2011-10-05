@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Contra Demo</title>
+  <link rel="stylesheet" href="contra.mobile.css" />
+  <style>
+    body{font-family:sans-serif;}
+  </style>
+</head>
+<body>
+  <h1>Contra JS</h1>
+  <p>↑ ↑ ↓ ↓ ← → ← → B A</p>
+
+  <script src="contra.mobile.min.js"></script>
+  <script>
+    contra(function () {
+        alert('ZOMGZ nerd!');
+    })
+
+    contra(function () {
+        var img = new Image;
+        img.src = 'http://nesmaps.com/images/Titles/ContraTitle.png';
+        img.onload = function () {
+            document.body.style.background = 'url('+ img.src +')';
+            document.body.style.color = '#FFF';
+        };
+    });
+  </script>
+</body>
+</html>
