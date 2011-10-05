@@ -12,12 +12,19 @@
         step = 0,
         // Touch enabled
         isT = !!('ontouchstart' in w),
-        evtLstr = 'addEventListener',
         almostThere = false,
+        currTouch,
         curX,
         curY,
         iX,
         iY,
+        // strings that are used more than once, so we can milk every byte out of the compiler
+        sAddEventListener = 'addEventListener',
+        sTouches = 'touches',
+        sLength = 'length',
+        sButton = 'button',
+        sAppendChild = 'appendChild',
+        sCreateElement = 'createElement',
         btnHolder,
         btnA,
         btnB;
@@ -35,14 +42,9 @@
     }
 
     function addEvent(event, fn) {
-        !!d[evtLstr] ?
-            d[evtLstr](event, fn, 0) :
+        !!d[sAddEventListener] ?
+            d[sAddEventListener](event, fn, 0) :
             d.attachEvent('on' + event, fn);
-    }
-
-    function stopEvent(e) {
-        e.stopPropagation();
-        e.preventDefault();
     }
 
     function childOf(element, parent) {
@@ -54,16 +56,12 @@
         return false;
     }
 
-    function createElement(el) {
-        return d.createElement(el);
-    }
-
     function onKey(e) {
         var key = e.which || e.keyCode;
 
         if (key === code[step]) {
             step++;
-            if (step >= code.length) {
+            if (step >= code[sLength]) {
                 complete();
                 reset();
             }
@@ -73,7 +71,7 @@
     }
 
     function btnClick(e) {
-        stopEvent(e);
+        e.preventDefault();
         curY = curX = iX = iY = 0;
 
         var letter = this.id.split('-')[1],
@@ -95,47 +93,48 @@
     }
 
     function showButtons() {
-        btnHolder = createElement('div');
-        btnA = createElement('button');
-        btnB = createElement('button');
-        btnHolder.id = 'contracode-controller';
-        btnA.id = 'contracode-a';
-        btnB.id = 'contracode-b';
-        btnA.innerHTML = 'A';
-        btnB.innerHTML = 'B';
-        btnHolder.style.cssText = [
-            'position:absolute',
-            'top:0',
-            'left:0',
-            'right:0',
-            'bottom:0'
-        ].join(';');
+        if (typeof btnHolder === 'undefined') {
+            btnHolder = d[sCreateElement]('div');
+            btnA = d[sCreateElement](sButton);
+            btnB = d[sCreateElement](sButton);
+            btnHolder.id = 'contracode-controller';
+            btnA.id = 'contracode-a';
+            btnB.id = 'contracode-b';
+            btnA.innerHTML = 'A';
+            btnB.innerHTML = 'B';
+            btnHolder.style.cssText = [
+                'position:absolute',
+                'top:0',
+                'left:0',
+                'right:0',
+                'bottom:0'
+            ].join(';');
+
+            btnHolder[sAppendChild](btnB);
+            btnHolder[sAppendChild](btnA);
+            d.body[sAppendChild](btnHolder);
+        }
 
         btnHolder.className = 'contra-visible';
-
-        btnHolder.appendChild(btnB);
-        btnHolder.appendChild(btnA);
-        d.body.appendChild(btnHolder);
     }
 
     function onTouchStart(e) {
-        //stopEvent(e);
-
-        if (e.touches.length) {
-            var t = e.touches[e.touches.length - 1];
+        if (e[sTouches][sLength]) {
+            // I know this is hideous but im optimizing so stfu
+            currTouch = e[sTouches][e[sTouches][sLength] - 1];
             curX = 0;
             curY = 0;
-            iX = t.pageX;
-            iY = t.pageY;
+            iX = currTouch.pageX;
+            iY = currTouch.pageY;
         }
     }
 
     function onTouchMove(e) {
-        //stopEvent(e);
-        if (e.touches.length) {
-            var t = e.touches[e.touches.length - 1];
-            curX = t.pageX;
-            curY = t.pageY;
+        if (e[sTouches][sLength]) {
+            // yup still hideous
+            currTouch = e[sTouches][e[sTouches][sLength] - 1];
+            curX = currTouch.pageX;
+            curY = currTouch.pageY;
         }
     }
 
@@ -144,8 +143,9 @@
         if (almostThere) {
             // if target is one of our buttons, or the textnode inside it,
             // make that button the target
-            var tg = e.target === btnA || childOf(e.target, btnA) ? btnA :
-                     e.target === btnB || childOf(e.target, btnB) ? btnB :
+            var eTarget = e.target,
+                tg = eTarget === btnA || childOf(eTarget, btnA) ? btnA :
+                     eTarget === btnB || childOf(eTarget, btnB) ? btnB :
                      false;
             // if target is not any of those, you lose
             if (tg) {
@@ -157,12 +157,17 @@
 
             var math = Math,
                 abs = math.abs,
+                // horizontal distance traveled
                 h = curX - iX,
+                // vertical distance traveled
                 v = curY - iY,
                 absH = abs(h),
                 absV = abs(v),
-                key = null;
+                key;
 
+            // if the difference between initial X and current X is more than
+            // the difference between initial Y and current Y, swipeis horizontal
+            // and vice-versa
             if (math.max(absH, absV) === absH) {
                 if (h > 0) {
                     //right
@@ -186,7 +191,7 @@
             });
 
             // are we there yet?
-            if (step === code.length - 2) {
+            if (step === code[sLength] - 2) {
                 almostThere = true;
                 showButtons();
             }
