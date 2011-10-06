@@ -26,6 +26,16 @@
   <script src="contra.mobile.js"></script>
   <!-- go nuts -->
   <script>
+    window.onload = function() {
+        setTimeout(function(){
+          window.scrollTo(0, 1);
+        }, 10);
+    };
+    document.ontouchmove = function (e) {
+        e.preventDefault();
+        onload();
+    }
+
     contra(function () {
         alert('ZOMGZ nerd!');
     })
@@ -65,7 +75,7 @@
 
                 box.style.background = rand ? '#FFF' : '#000';
                 box.style.color =  rand ? '#000' : '#FFF';
-            }, 50);
+            }, 100);
         };
     });
   </script>
